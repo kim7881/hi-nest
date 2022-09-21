@@ -19,6 +19,6 @@ class UserModel{
     required this.imageUrl,
   });
 
-  factory UserModel.formJson(Map<String, dynamic> json)
+  factory UserModel.fromJson(Map<String, dynamic> json)
   => _$UserModelFromJson(json);
 }

@@ -1,4 +1,5 @@
 import 'package:actual/common/const/colors.dart';
+import 'package:actual/rating/model/rating_model.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -8,12 +9,16 @@ class RatingCard extends StatelessWidget {
   //
   // CircleAvatar
   final ImageProvider avatarImage;
+
   // 리스트로 위젯 이미지를 보여줄때
   final List<Image> images;
+
   // 별점
   final int rating;
+
   // 이메일
   final String email;
+
   // 리뷰내용
   final String content;
 
@@ -25,6 +30,20 @@ class RatingCard extends StatelessWidget {
     required this.email,
     required this.content,
   }) : super(key: key);
+
+  factory RatingCard.fromModel({
+    required RatingModel model,
+  }) {
+    return RatingCard(
+      avatarImage: NetworkImage(
+        model.user.imageUrl,
+      ),
+      images: model.imgUrls.map((e) => Image.network(e)).toList(),
+      rating: model.rating,
+      email: model.user.username,
+      content: model.content,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +59,13 @@ class RatingCard extends StatelessWidget {
           content: content,
         ),
         if (images.length > 0)
-          SizedBox(
-            height: 100,
-            child: _Images(
-              images: images,
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              height: 100,
+              child: _Images(
+                images: images,
+              ),
             ),
           ),
       ],
@@ -97,6 +119,7 @@ class _Header extends StatelessWidget {
 
 class _Body extends StatelessWidget {
   final String content;
+
   const _Body({
     Key? key,
     required this.content,
